@@ -1,14 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from urllib.parse import quote
 import hashlib
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:p@ssw0rd@localhost/crud_demo'
+
+password = 'p@ssw0rd'
+encoded_pass = quote(password, safe='')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root:{encoded_pass}@localhost/crud_demo'
 db = SQLAlchemy(app)
 
 from models import User
-
-db.create_all()
 
 @app.route('/')
 def index():
